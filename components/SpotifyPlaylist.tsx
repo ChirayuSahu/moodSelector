@@ -30,7 +30,7 @@ export default function SpotifyPlaylist({ mood }: SpotifyPlaylistProps) {
       id: "37i9dQZF1DX76Wlfdnj7AP",
       description: "High-energy tracks to fuel your workout or boost your energy."
     },
-    focused: {
+    sad: {
       name: "Sad Songs",
       id: "37i9dQZF1DX7qK8ma5wgG1",
       description: "Instrumental music to help you concentrate and stay focused."
