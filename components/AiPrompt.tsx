@@ -55,7 +55,7 @@ export default function AiPrompt({ onAiMoodChange }: AiPromptProps) {
         { mood: "happy", bgColor: "bg-yellow-100", textColor: "text-yellow-900", speed: 0.7 },
         { mood: "calm", bgColor: "bg-blue-100", textColor: "text-blue-900", speed: 0.3 },
         { mood: "energetic", bgColor: "bg-orange-100", textColor: "text-orange-900", speed: 1 },
-        { mood: "sad", bgColor: "bg-slate-400", textColor: "text-slate-900", speed: 0.1 },
+        { mood: "sad", bgColor: "bg-stone-200", textColor: "text-stone-900", speed: 0.1 },
         { mood: "neutral", bgColor: "bg-white-400", textColor: "text-white-900", speed: 0.2 }
         
       ];
