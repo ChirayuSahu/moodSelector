@@ -7,7 +7,7 @@ import { Loader2 } from "lucide-react";
 import { GoogleGenerativeAI } from "@google/generative-ai"
 
 interface AiPromptProps {
-  onAiMoodChange: (mood: string, bgColor: string, textColor: string) => void;
+  onAiMoodChange: (mood: string, bgColor: string, textColor: string, speed: number) => void;
 }
 
 export default function AiPrompt({ onAiMoodChange }: AiPromptProps) {
@@ -34,7 +34,7 @@ export default function AiPrompt({ onAiMoodChange }: AiPromptProps) {
       const responseText = await result.response.text();
       setResponse(responseText);
 
-      analyzeMood(responseText);
+      analyzeMood(responseText); // Call analyzeMood after setting response
 
     } catch (error) {
       console.error("Error generating content:", error);
@@ -52,18 +52,20 @@ export default function AiPrompt({ onAiMoodChange }: AiPromptProps) {
 
     try {
       const moodOptions = [
-        { mood: "happy", bgColor: "bg-yellow-100", textColor: "text-yellow-900" },
-        { mood: "calm", bgColor: "bg-blue-100", textColor: "text-blue-900" },
-        { mood: "energetic", bgColor: "bg-orange-100", textColor: "text-orange-900" },
-        { mood: "sad", bgColor: "bg-slate-400", textColor: "text-slate-900" },
-        { mood: "neutral", bgColor: "bg-white-400", textColor: "text-white-900" }
+        { mood: "happy", bgColor: "bg-yellow-100", textColor: "text-yellow-900", speed: 0.7 },
+        { mood: "calm", bgColor: "bg-blue-100", textColor: "text-blue-900", speed: 0.3 },
+        { mood: "energetic", bgColor: "bg-orange-100", textColor: "text-orange-900", speed: 1 },
+        { mood: "sad", bgColor: "bg-slate-400", textColor: "text-slate-900", speed: 0.1 },
+        { mood: "neutral", bgColor: "bg-white-400", textColor: "text-white-900", speed: 0.2 }
+        
       ];
 
       const lowerText = text.toLowerCase();
       let selectedMood = moodOptions.find(({ mood }) => lowerText.includes(mood)) || moodOptions[4];
 
-      onAiMoodChange(selectedMood.mood, selectedMood.bgColor, selectedMood.textColor);
-      
+      onAiMoodChange(selectedMood.mood, selectedMood.bgColor, selectedMood.textColor, selectedMood.speed);
+
+      console.log("Detected mood:", selectedMood.mood , ",from text:", text);
     } catch (error) {
       console.error("Error analyzing mood:", error);
       setError("Failed to analyze mood. Please try again.");
