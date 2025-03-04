@@ -28,7 +28,7 @@ export default function Home() {
 
   return (
     <>  
-    <div className="fixed inset-0 z-0 pointer-events-none">
+    <div className="fixed inset-0 z-0">
         <Particles
           particleColors={['#000000', '#000000']}
           particleCount={200}
