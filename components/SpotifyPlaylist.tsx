@@ -36,8 +36,8 @@ export default function SpotifyPlaylist({ mood }: SpotifyPlaylistProps) {
       description: "Instrumental music to help you concentrate and stay focused."
     },
     neutral: {
-      name: "Today's Top Hits",
-      id: "37i9dQZF1DXcBWIGoYBM5M",
+      name: "Sad Songs",
+      id: "37i9dQZF1DX7qK8ma5wgG1",
       description: "The most popular tracks right now."
     }
   };
