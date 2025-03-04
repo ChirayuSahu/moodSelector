@@ -34,7 +34,7 @@ export default function AiPrompt({ onAiMoodChange }: AiPromptProps) {
       const responseText = await result.response.text();
       setResponse(responseText);
 
-      analyzeMood(responseText); // Call analyzeMood after setting response
+      analyzeMood(responseText);
 
     } catch (error) {
       console.error("Error generating content:", error);
@@ -62,8 +62,7 @@ export default function AiPrompt({ onAiMoodChange }: AiPromptProps) {
       let selectedMood = moodOptions.find(({ mood }) => lowerText.includes(mood)) || moodOptions[0];
 
       onAiMoodChange(selectedMood.mood, selectedMood.bgColor, selectedMood.textColor);
-
-      console.log("Detected mood:", selectedMood.mood, "from text:", text);
+      
     } catch (error) {
       console.error("Error analyzing mood:", error);
       setError("Failed to analyze mood. Please try again.");
