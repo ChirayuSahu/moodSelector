@@ -17,7 +17,7 @@ export default function AiPrompt({ onAiMoodChange }: AiPromptProps) {
   const [userPrompt, setUserPrompt] = useState("");
 
   const handleGenerateContent = async () => {
-    const newPrompt = `${userPrompt}. Categorize this into at least one of these: Happy, Calm, Energetic, Sad.`;
+    const newPrompt = `${userPrompt}. Categorize this into at least one of these: Happy, Calm, Energetic, Sad. If the input is irrelevant or lacks emotional context, return "Unknown" instead.`;
 
     const key = process.env.NEXT_PUBLIC_GEMINI_KEY;
     if (!key) {
@@ -55,7 +55,8 @@ export default function AiPrompt({ onAiMoodChange }: AiPromptProps) {
         { mood: "happy", bgColor: "bg-yellow-100", textColor: "text-yellow-900" },
         { mood: "calm", bgColor: "bg-blue-100", textColor: "text-blue-900" },
         { mood: "energetic", bgColor: "bg-orange-100", textColor: "text-orange-900" },
-        { mood: "sad", bgColor: "bg-slate-400", textColor: "text-slate-900" }
+        { mood: "sad", bgColor: "bg-slate-400", textColor: "text-slate-900" },
+        { mood: "neutral", bgColor: "bg-white-400", textColor: "text-white-900" }
       ];
 
       const lowerText = text.toLowerCase();
