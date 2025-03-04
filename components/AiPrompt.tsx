@@ -17,7 +17,7 @@ export default function AiPrompt({ onAiMoodChange }: AiPromptProps) {
   const [userPrompt, setUserPrompt] = useState("");
 
   const handleGenerateContent = async () => {
-    const newPrompt = `${userPrompt}. Categorize this into ONLY ONE of these: Happy, Calm, Energetic, or Sad. Choose the most appropriate category based on the dominant emotion. If the input is irrelevant, too short, or lacks emotional context, return "Unknown" instead.`;
+    const newPrompt = `${userPrompt}. Categorize this into ONLY ONE of these: Happy, Calm, Energetic, or Sad. Choose the most appropriate category based on the dominant emotion. If the input is irrelevant or lacks emotional context, return "Unknown" instead.`;
 
     const key = process.env.NEXT_PUBLIC_GEMINI_KEY;
     if (!key) {
