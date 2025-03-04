@@ -31,13 +31,13 @@ export default function SpotifyPlaylist({ mood }: SpotifyPlaylistProps) {
       description: "High-energy tracks to fuel your workout or boost your energy."
     },
     focused: {
-      name: "Deep Focus",
-      id: "37i9dQZF1DWZeKCadgRdKQ",
+      name: "Sad Songs",
+      id: "37i9dQZF1DX7qK8ma5wgG1",
       description: "Instrumental music to help you concentrate and stay focused."
     },
     neutral: {
-      name: "Sad Songs",
-      id: "37i9dQZF1DX7qK8ma5wgG1",
+      name: "Today's Top Hits",
+      id: "37i9dQZF1DXcBWIGoYBM5M",
       description: "The most popular tracks right now."
     }
   };
