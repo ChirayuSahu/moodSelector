@@ -60,7 +60,7 @@ export default function AiPrompt({ onAiMoodChange }: AiPromptProps) {
       ];
 
       const lowerText = text.toLowerCase();
-      let selectedMood = moodOptions.find(({ mood }) => lowerText.includes(mood)) || moodOptions[0];
+      let selectedMood = moodOptions.find(({ mood }) => lowerText.includes(mood)) || moodOptions[4];
 
       onAiMoodChange(selectedMood.mood, selectedMood.bgColor, selectedMood.textColor);
       
