@@ -51,6 +51,9 @@ function HomeContent() {
           </Card>
           <SpotifyPlaylist mood={mood} />
         </div>
+        <Card className={`p-6 text-center text-sm text-muted-foreground`}>
+        <p>Made by <a className="text-blue-500" href="https://chirayusahu.is-a.dev/" target="_blank">Chirayu</a> | <a className="text-blue-500" href="https://github.com/ChirayuSahu/moodSelector" target="_blank">Github Repo</a></p>
+      </Card>
       </div>
 
       <div className="fixed inset-0">
