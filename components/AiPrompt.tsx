@@ -5,12 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import { GoogleGenerativeAI } from "@google/generative-ai"
+import { Card } from "./ui/card";
 
 interface AiPromptProps {
-  onAiMoodChange: (mood: string, bgColor: string, textColor: string, speed: number) => void;
+  onAiMoodChange: (mood: string, bgColor: string, textColor: string, speed: number, field: string) => void;
 }
 
 export default function AiPrompt({ onAiMoodChange }: AiPromptProps) {
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [response, setResponse] = useState("");
@@ -86,18 +88,18 @@ export default function AiPrompt({ onAiMoodChange }: AiPromptProps) {
 
     try {
       const moodOptions = [
-        { mood: "happy", bgColor: "bg-yellow-100", textColor: "text-yellow-900", speed: 0.7 },
-        { mood: "calm", bgColor: "bg-blue-100", textColor: "text-blue-900", speed: 0.3 },
-        { mood: "energetic", bgColor: "bg-orange-100", textColor: "text-orange-900", speed: 1 },
-        { mood: "sad", bgColor: "bg-stone-200", textColor: "text-stone-900", speed: 0.1 },
-        { mood: "neutral", bgColor: "bg-white-100", textColor: "text-white-900", speed: 0.2 }
+        { mood: "happy", bgColor: "bg-yellow-100", textColor: "text-yellow-900", speed: 0.7, field: "" },
+        { mood: "calm", bgColor: "bg-blue-100", textColor: "text-blue-900", speed: 0.3, field: "" },
+        { mood: "energetic", bgColor: "bg-orange-100", textColor: "text-orange-900", speed: 1, field: "" },
+        { mood: "sad", bgColor: "bg-stone-200", textColor: "text-stone-900", speed: 0.1, field: "" },
+        { mood: "neutral", bgColor: "bg-white-100", textColor: "text-white-900", speed: 0.2, field: "" }
 
       ];
 
       const lowerText = text.toLowerCase();
       let selectedMood = moodOptions.find(({ mood }) => lowerText.includes(mood)) || moodOptions[4];
 
-      onAiMoodChange(selectedMood.mood, selectedMood.bgColor, selectedMood.textColor, selectedMood.speed);
+      onAiMoodChange(selectedMood.mood, selectedMood.bgColor, selectedMood.textColor, selectedMood.speed, selectedMood.field);
 
       console.log("Detected mood:", selectedMood.mood, ",from text:", text);
     } catch (error) {
@@ -139,9 +141,9 @@ export default function AiPrompt({ onAiMoodChange }: AiPromptProps) {
         </Button>
       </div>
       {error && <p className="text-sm text-destructive">{error}</p>}
-      <p className={`text-sm text-muted-foreground`}>
+      <Card className={`p-6 text-sm text-muted-foreground`}>
         {moodText}
-      </p>
+      </Card>
     </div>
   );
 }
