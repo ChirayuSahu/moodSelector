@@ -15,10 +15,10 @@ export default function AiPrompt({ onAiMoodChange }: AiPromptProps) {
   const [error, setError] = useState("");
   const [response, setResponse] = useState("");
   const [userPrompt, setUserPrompt] = useState("");
+  const [moodText, setMoodText] = useState(`Enter a description of your mood or thoughts, and our AI will detect your mood and adjust the UI accordingly. Try phrases like "I feel happy today" or "I need to focus on my work.`);
 
   const handleGenerateContent = async () => {
-    const newPrompt = `${userPrompt}. Categorize this into ONLY ONE of these: Happy, Calm, Energetic, or Sad. Choose the most appropriate category based on the dominant emotion. If the input is irrelevant or lacks emotional context, return "Unknown" instead.`;
-
+    const newPrompt = `${userPrompt}. Categorize this into ONLY ONE of these: Happy, Calm, Energetic, or Sad. Choose the most appropriate category based on the dominant emotion. Return the response in the following STRICT JSON format: { "mood": "selected_mood", "textForMood": "description_of_mood" }. Where description can be supportive for the user under 20 words. STRICTLY Do not include any additional text, explanations, or Markdown code blocks. Only Return RAW JSON. If the input is irrelevant or lacks emotional context, return "Unknown" instead. `;
     const key = process.env.NEXT_PUBLIC_GEMINI_KEY;
     if (!key) {
       throw new Error("NEXT_PUBLIC_GEMINI_KEY is not defined");
@@ -28,13 +28,47 @@ export default function AiPrompt({ onAiMoodChange }: AiPromptProps) {
 
     try {
       const genAI = new GoogleGenerativeAI(key);
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-      const result = await model.generateContent(newPrompt);
-      const responseText = await result.response.text();
+    const result = await model.generateContent(newPrompt);
+    const responseText = await result.response.text();
+    let cleanedResponse = responseText.trim();
+
+    if (cleanedResponse.startsWith("```json")) {
+      cleanedResponse = cleanedResponse.slice(7).trim(); 
+    }
+    if (cleanedResponse.endsWith("```")) {
+      cleanedResponse = cleanedResponse.slice(0, -3).trim(); 
+    }
+
+
+    let responseJson;
+    try {
+      responseJson = JSON.parse(cleanedResponse);
+    } catch (error) {
+
+      const jsonMatch = cleanedResponse.match(/\{.*\}/); 
+      if (jsonMatch) {
+        responseJson = JSON.parse(jsonMatch[0]);
+      } else {
+        throw new Error("Invalid JSON response from Gemini");
+      }
+    }
+
+    if (!responseJson.mood || !responseJson.textForMood) {
+      throw new Error("Invalid JSON structure from Gemini");
+    }
+
+
+    const { mood, textForMood } = responseJson;
+
+    console.log(responseText)
+
       setResponse(responseText);
+      setMoodText(textForMood);
 
-      analyzeMood(responseText); // Call analyzeMood after setting response
+      analyzeMood(mood);
+
 
     } catch (error) {
       console.error("Error generating content:", error);
@@ -56,8 +90,8 @@ export default function AiPrompt({ onAiMoodChange }: AiPromptProps) {
         { mood: "calm", bgColor: "bg-blue-100", textColor: "text-blue-900", speed: 0.3 },
         { mood: "energetic", bgColor: "bg-orange-100", textColor: "text-orange-900", speed: 1 },
         { mood: "sad", bgColor: "bg-stone-200", textColor: "text-stone-900", speed: 0.1 },
-        { mood: "neutral", bgColor: "bg-white-400", textColor: "text-white-900", speed: 0.2 }
-        
+        { mood: "neutral", bgColor: "bg-white-100", textColor: "text-white-900", speed: 0.2 }
+
       ];
 
       const lowerText = text.toLowerCase();
@@ -65,7 +99,7 @@ export default function AiPrompt({ onAiMoodChange }: AiPromptProps) {
 
       onAiMoodChange(selectedMood.mood, selectedMood.bgColor, selectedMood.textColor, selectedMood.speed);
 
-      console.log("Detected mood:", selectedMood.mood , ",from text:", text);
+      console.log("Detected mood:", selectedMood.mood, ",from text:", text);
     } catch (error) {
       console.error("Error analyzing mood:", error);
       setError("Failed to analyze mood. Please try again.");
@@ -105,9 +139,8 @@ export default function AiPrompt({ onAiMoodChange }: AiPromptProps) {
         </Button>
       </div>
       {error && <p className="text-sm text-destructive">{error}</p>}
-      <p className="text-sm text-muted-foreground">
-        Enter a description of your mood or thoughts, and our AI will detect your mood and adjust the UI accordingly.
-        Try phrases like "I feel happy today" or "I need to focus on my work".
+      <p className={`text-sm text-muted-foreground`}>
+        {moodText}
       </p>
     </div>
   );

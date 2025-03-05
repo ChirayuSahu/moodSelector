@@ -26,21 +26,10 @@ export default function Home() {
     setSpeed(speed)
   };
 
+
   return (
-    <>  
-    <div className="fixed inset-0 z-0">
-        <Particles
-          particleColors={['#000000', '#000000']}
-          particleCount={200}
-          particleSpread={10}
-          speed={speed}
-          particleBaseSize={100}
-          moveParticlesOnHover={true}
-          alphaParticles={true}
-          disableRotation={false}
-        />
-      </div>
-      <div className={`min-h-screen ${backgroundColor} transition-colors duration-500`}>
+    <> 
+      <div className={`min-h-screen ${backgroundColor} transition-colors duration-500 z-10`}>
         <div className="max-w-4xl mx-auto p-8 relative z-10">
           <h1 className={`text-4xl font-bold mb-8 ${textColor} text-center`}>
             Mood-Based UI
@@ -58,7 +47,7 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div className={`p-6 rounded-lg border ${textColor} border-border`}>
-              <h2 className={`text-2xl font-semibold mb-4 ${textColor}`}>Current Mood: {mood}</h2>
+              <h2 className={`text-2xl font-semibold mb-4 ${textColor}`}>Current Mood: <span className="capitalize">{mood}</span></h2>
               <p className={`${textColor}`}>
                 The UI adapts to your mood, changing colors to match how you feel.
                 Try selecting different moods or let AI analyze your text to set the mood automatically.
@@ -68,6 +57,18 @@ export default function Home() {
             <SpotifyPlaylist mood={mood} />
           </div>
         </div>
+      </div>
+      <div className="fixed inset-0">
+        <Particles
+          particleColors={['#000000', '#FFFFFF']}
+          particleCount={500}
+          particleSpread={10}
+          speed={speed}
+          particleBaseSize={100}
+          moveParticlesOnHover={true}
+          alphaParticles={true}
+          disableRotation={true}
+        />
       </div>
     </>
   );
