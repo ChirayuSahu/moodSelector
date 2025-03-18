@@ -26,7 +26,7 @@ export default function AiPrompt() {
     setIsLoading(true);
     setError("");
 
-    const newPrompt = `${userPrompt}. Categorize this into ONLY ONE of these: Happy, Calm, Energetic, or Sad. Choose the most appropriate category based on the dominant emotion. Return the response in the following STRICT JSON format: { "mood": "selected_mood", "textForMood": "description_of_mood" }. Where description can be supportive for the user under 20 words. Do not include any extra text, explanations, or Markdown code blocks. If the input is irrelevant, return { "mood": "Unknown", "textForMood": "Unable to determine mood." }`;
+    const newPrompt = `${userPrompt}. Categorize this into ONLY ONE of these: Happy, Calm, Energetic, or Sad. Choose the most appropriate category based on the dominant emotion. Return the response in the following STRICT JSON format: { "mood": "selected_mood", "textForMood": "description_of_mood" }. Where description can be supportive for the user under 20 words. Do not include any extra text, explanations, or Markdown code blocks. If the input is irrelevant, return { "mood": "Unknown", "textForMood": "Unable to determine mood." , dont add any extra spaces or enter.`;
 
     try {
       const genAI = new GoogleGenerativeAI(apiKey);
