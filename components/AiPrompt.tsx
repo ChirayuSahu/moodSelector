@@ -4,9 +4,9 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Card } from "./ui/card";
 import { useMood } from "./MoodContext";
+import { GoogleGenAI } from "@google/genai"
 
 export default function AiPrompt() {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,6 +17,7 @@ export default function AiPrompt() {
     if (!userPrompt.trim()) return;
 
     const apiKey = process.env.NEXT_PUBLIC_GEMINI_KEY;
+
     if (!apiKey) {
       console.error("NEXT_PUBLIC_GEMINI_KEY is not defined");
       setError("AI service is unavailable. Please try again later.");
@@ -26,15 +27,17 @@ export default function AiPrompt() {
     setIsLoading(true);
     setError("");
 
-    const newPrompt = `${userPrompt}. Categorize this into ONLY ONE of these: Happy, Calm, Energetic, or Sad. Choose the most appropriate category based on the dominant emotion. Return the response in the following STRICT JSON format: { "mood": "selected_mood", "textForMood": "description_of_mood" }. Where description can be supportive for the user under 20 words. Do not include any extra text, explanations, or Markdown code blocks. If the input is irrelevant, return { "mood": "Unknown", "textForMood": "Unable to determine mood." , dont add any extra spaces or enter.`;
+    const newPrompt = `${userPrompt}. Categorize this into ONLY ONE of these: Happy, Calm, Energetic, or Sad. Choose the most appropriate category based on the dominant emotion. Return the response in the following STRICT JSON format. : { "mood": "selected_mood", "textForMood": "description_of_mood" }. Where description can be supportive for the user under 20 words. Do not include any extra text, explanations, or Markdown code blocks. If the input is irrelevant, return this format only { "mood": "Unknown", "textForMood": "Unable to determine mood." , dont add any extra spaces or enter.`;
 
     try {
-      const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+      const genAI = new GoogleGenAI({ apiKey: apiKey });
 
-      const result = await model.generateContent(newPrompt);
-      let responseText = await result.response.text();
-      responseText = responseText.trim();
+      const res = await genAI.models.generateContent({
+        model: "gemini-2.0-flash",
+        contents: newPrompt,
+      });
+      let responseText = await res.text;
+      responseText = responseText!.trim();
 
       const jsonMatch = responseText.match(/\{.*\}/);
       if (!jsonMatch) throw new Error("Invalid response format from AI");
